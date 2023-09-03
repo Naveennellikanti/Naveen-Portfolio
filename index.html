@@ -164,8 +164,36 @@
         </ul>
     </section>
 
+    <!-- Download as PDF Button -->
+    <button id="download-pdf" class="pdf-button">Download as PDF</button>
+
     <footer>
         &copy; 2023 Naveen Nellikanti. All rights reserved.
     </footer>
+
+    <!-- JavaScript for PDF Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function () {
+            const element = document.body; // The element to convert to PDF (entire page)
+            const options = {
+                margin: 10,
+                filename: 'naveen_nellikanti_portfolio.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(element).set(options).outputPdf(function (pdf) {
+                const blob = new Blob([pdf], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = options.filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
 </body>
 </html>
